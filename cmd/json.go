@@ -1,14 +1,20 @@
 /*
 Copyright © 2022 NAME HERE <EMAIL ADDRESS>
-
 */
 package cmd
 
 import (
-	"fmt"
+	"io/ioutil"
 
 	"github.com/spf13/cobra"
+	"github.com/tidwall/pretty"
 )
+
+func check(e error) {
+	if e != nil {
+		panic(e)
+	}
+}
 
 // jsonCmd represents the json command
 var jsonCmd = &cobra.Command{
@@ -21,7 +27,12 @@ Cobra is a CLI library for Go that empowers applications.
 This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("json called")
+		// fmt.Println("json called")
+		filename := args[0]
+		dat, err := ioutil.ReadFile(filename)
+		check(err)
+		// fmt.Print(string(pretty.Pretty(dat)))
+		ioutil.WriteFile(filename, pretty.Pretty(dat), 0644)
 	},
 }
 
